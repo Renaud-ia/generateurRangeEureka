@@ -1,7 +1,8 @@
 import json
+import os.path
 
-from persistence import Enregistreur
-from poker import VariantePoker, SituationPoker, RangePoker
+from .enregistreur import Enregistreur
+from poker import SituationPoker, RangePoker
 
 
 class JsonEnregistreur(Enregistreur):
@@ -11,6 +12,9 @@ class JsonEnregistreur(Enregistreur):
         super().__init__(variante_poker, self.nom_repertoire)
 
     def _charger_fichier(self, adresse_fichier: str):
+        if not os.path.exists(adresse_fichier):
+            return {}
+
         with open(self.adresse_fichier, 'r', encoding='utf-8') as fichier:
             return json.load(fichier)
 
@@ -18,7 +22,7 @@ class JsonEnregistreur(Enregistreur):
         self.donnees["statut"] = statut
 
     def ajouter_range(self, situation: SituationPoker, poker_range: RangePoker) -> bool:
-        if self.donnees[situation.encode()]:
+        if situation.encode() in self.donnees:
             return False
 
         self.donnees[situation.encode()] = poker_range.to_dict()

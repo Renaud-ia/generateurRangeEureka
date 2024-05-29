@@ -3,4 +3,4 @@ class VariantePoker:
         pass
 
     def encode(self):
-        pass
+        return "agaga"
