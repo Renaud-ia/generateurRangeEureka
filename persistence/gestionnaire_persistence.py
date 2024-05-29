@@ -10,14 +10,14 @@ connecteur_persistence = JsonEnregistreur
 
 class GestionnairePersistence:
     @classmethod
-    def creer_enregistreur(cls, variante_poker: VariantePoker) -> Enregistreur:
+    def recuperer_enregistreur(cls, variante_poker: VariantePoker) -> Enregistreur:
         return connecteur_persistence(variante_poker.encode())
 
     @classmethod
     def recuperer_tous_les_enregistreurs(cls) -> list[Enregistreur]:
         enregistreurs: list[Enregistreur] = []
 
-        repertoire: str = connecteur_persistence.obt_nom_repertoire()
+        repertoire: str = connecteur_persistence.nom_repertoire
 
         for nom_fichier in os.listdir(repertoire):
             chemin_complet: str = os.path.join(repertoire, nom_fichier)

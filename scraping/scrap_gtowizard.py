@@ -1,0 +1,2 @@
+class ScrapGtoWizard:
+    pass

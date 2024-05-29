@@ -5,8 +5,9 @@ from poker import VariantePoker, SituationPoker, RangePoker
 
 
 class JsonEnregistreur(Enregistreur):
+    nom_repertoire: str = "json"
+
     def __init__(self, variante_poker: str):
-        self.nom_repertoire: str = "json"
         super().__init__(variante_poker, self.nom_repertoire)
 
     def _charger_fichier(self, adresse_fichier: str):
@@ -29,7 +30,3 @@ class JsonEnregistreur(Enregistreur):
     def sauvegarder(self):
         with open(self.adresse_fichier, 'w', encoding='utf-8') as fichier:
             json.dump(self.donnees, fichier, indent=4)
-
-    @classmethod
-    def obt_nom_repertoire(cls):
-        return self.nom_repertoire

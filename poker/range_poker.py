@@ -4,3 +4,10 @@ class RangePoker:
 
     def to_dict(self):
         pass
+
+    @classmethod
+    def from_dict(self, json_range: dict[str: float]):
+        pass
+
+    def generer_input(self) -> list[float]:
+        pass
