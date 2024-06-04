@@ -6,7 +6,7 @@ class RangePoker:
         pass
 
     @classmethod
-    def from_dict(self, json_range: dict[str: float]):
+    def from_dict(cls, json_range: dict[str: float]):
         pass
 
     def generer_input(self) -> list[float]:

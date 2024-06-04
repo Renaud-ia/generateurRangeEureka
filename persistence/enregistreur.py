@@ -1,23 +1,23 @@
 from abc import ABC, abstractmethod
 import os
 
-from poker import RangePoker, SituationPoker, VariantePoker
+from poker import RangePoker, SituationPoker, FormatPoker
 
 
 class Enregistreur(ABC):
-    def __init__(self, variante_poker: str, nom_repertoire: str):
+    def __init__(self, format_poker: str, nom_repertoire: str):
         os.makedirs(nom_repertoire, exist_ok=True)
         self.repertoire: str = nom_repertoire
-        self.adresse_fichier = os.path.join(nom_repertoire, variante_poker)
+        self.adresse_fichier = os.path.join(nom_repertoire, format_poker)
         self.donnees = self._charger_fichier(self.adresse_fichier)
         self._fixer_statut(False)
 
-    def terminer_enregistrement(self):
+    def terminer_enregistrement(self) -> None:
         self._fixer_statut(True)
         self.sauvegarder()
 
     @abstractmethod
-    def _fixer_statut(self, statut: bool):
+    def _fixer_statut(self, statut: bool) -> None:
         raise NotImplementedError()
 
     @abstractmethod
@@ -25,11 +25,11 @@ class Enregistreur(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def ajouter_range(self, situation: SituationPoker, poker_range: RangePoker):
+    def ajouter_range(self, situation: SituationPoker, poker_range: RangePoker) -> bool:
         raise NotImplementedError()
 
     @abstractmethod
-    def sauvegarder(self):
+    def sauvegarder(self) -> None:
         raise NotImplementedError()
 
     @abstractmethod
