@@ -37,8 +37,5 @@ class SituationPoker:
         self.actions.append(action_poker)
 
     def encode(self):
-        pass
-
-    def copie_profonde(self) -> 'SituationPoker':
-        # todo
+        #todo
         pass

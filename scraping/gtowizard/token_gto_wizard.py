@@ -12,4 +12,4 @@ class TokenManagerGtoWizard:
 
     @staticmethod
     def _obtain_token():
-        return input("Entrez un bearer pour le scraping")
+        return input("Entrez un bearer pour le scraping :\n")

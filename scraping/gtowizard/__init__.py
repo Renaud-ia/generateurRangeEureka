@@ -2,3 +2,4 @@ from .format_gto_wizard import BuilderFormatGtoWizard, FormatGtoWizard
 from .situation_gto_wizard import SituationPokerGtoWizard
 from .token_gto_wizard import TokenManagerGtoWizard
 from .scraping_task_gto_wizard import ScrapingTaskGtoWizard
+from .poker_elements_gto_wizard import RangeGtoWizard

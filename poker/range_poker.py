@@ -1,16 +1,16 @@
 class RangePoker:
     def __init__(self):
-        #todo
-        pass
+        self.combos: dict[str, float] = {}
 
-    def to_dict(self):
-        #todo
-        pass
+    def to_dict(self) -> dict[str, float]:
+        return self.combos
 
     @classmethod
     def from_dict(cls, json_range: dict[str: float]):
-        #todo
-        pass
+        instance = cls()
+        instance.combos = json_range
+        return instance
 
     def generer_input(self) -> list[float]:
+        #todo pour ML
         pass

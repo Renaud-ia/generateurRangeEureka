@@ -1,3 +1,5 @@
+import copy
+
 import requests
 
 from poker import RangePoker
@@ -68,7 +70,7 @@ class ScrapingTaskGtoWizard(ScrapingTask):
             range_as_float: list[float] = action["strategy"]
             range_convertie: RangeGtoWizard = RangeGtoWizard(range_as_float)
 
-            nouvelle_situation = self.situation.copie_profonde()
+            nouvelle_situation = copy.deepcopy(self.situation)
             nouvelle_situation.ajouter_action(action_convertie)
 
             extracted_ranges[nouvelle_situation] = range_convertie
