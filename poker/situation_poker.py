@@ -4,22 +4,26 @@ from poker.action_poker import ActionPoker
 
 
 class InitialStacks(ABC):
-    @abstractmethod
-    def n_initial_players(self):
-        raise NotImplementedError()
+    pass
 
 
 class InitialSymmetricStacks(InitialStacks):
     def __init__(self, amount_stack: float):
-        pass
+        self.initial_stack = amount_stack
 
-    def n_initial_players(self):
-        pass
+    def __eq__(self, other):
+        if self is other:
+            return True
+        if not isinstance(other, InitialSymmetricStacks):
+            return False
+        return self.initial_stack == other.initial_stack
+
+    def get_common_stack(self):
+        return self.initial_stack
 
 
 class InitialNonSymmetricStacks(InitialStacks):
-    def n_initial_players(self):
-        pass
+    pass
 
 
 class SituationPoker:

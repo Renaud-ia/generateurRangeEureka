@@ -1,6 +1,6 @@
 from abc import abstractmethod, ABC
 
-from poker import FormatPoker
+from poker import FormatPoker, InitialSymmetricStacks
 from poker import Variante, TypeJeuPoker
 from poker import InitialStacks
 from scraping.gtowizard.converting_url import ConvertInParameters
@@ -31,8 +31,31 @@ class MttStandardGtoWizard(FormatGtoWizard):
         )
 
     def possibles_stack_sizes(self) -> list[InitialStacks]:
-        # todo
-        pass
+        possibles_stacks: list[InitialStacks] = [
+            InitialSymmetricStacks(100),
+            InitialSymmetricStacks(80),
+            InitialSymmetricStacks(60),
+            InitialSymmetricStacks(50),
+            InitialSymmetricStacks(40),
+            InitialSymmetricStacks(35),
+            InitialSymmetricStacks(30),
+            InitialSymmetricStacks(25),
+            InitialSymmetricStacks(20),
+            InitialSymmetricStacks(17),
+            InitialSymmetricStacks(14),
+            InitialSymmetricStacks(12),
+            InitialSymmetricStacks(10),
+            InitialSymmetricStacks(9),
+            InitialSymmetricStacks(8),
+            InitialSymmetricStacks(7),
+            InitialSymmetricStacks(6),
+            InitialSymmetricStacks(5),
+            InitialSymmetricStacks(4),
+            InitialSymmetricStacks(3),
+            InitialSymmetricStacks(2)
+        ]
+
+        return possibles_stacks
 
     def generate_parameters(self) -> dict[str, str]:
         return {"gametype": "MTTGeneral"}
@@ -47,10 +70,20 @@ class CashGameClassicGtoWizard(FormatGtoWizard):
         )
 
     def possibles_stack_sizes(self) -> list[InitialStacks]:
-        pass
+        possible_stacks: list[InitialStacks] = [
+            InitialSymmetricStacks(200),
+            InitialSymmetricStacks(150),
+            InitialSymmetricStacks(100),
+            InitialSymmetricStacks(75),
+            InitialSymmetricStacks(50),
+            InitialSymmetricStacks(40),
+            InitialSymmetricStacks(20)
+        ]
+
+        return possible_stacks
 
     def generate_parameters(self) -> dict[str, str]:
-        pass
+        return {"gametype": "Cash6m500z"}
 
 
 class SpinClassicGtoWizard(FormatGtoWizard):
@@ -62,10 +95,60 @@ class SpinClassicGtoWizard(FormatGtoWizard):
         )
 
     def possibles_stack_sizes(self) -> list[InitialStacks]:
-        pass
+        possible_stacks: list[InitialStacks] = [
+            InitialSymmetricStacks(72),
+            InitialSymmetricStacks(60),
+            InitialSymmetricStacks(55),
+            InitialSymmetricStacks(50),
+            InitialSymmetricStacks(45),
+            InitialSymmetricStacks(40),
+            InitialSymmetricStacks(35),
+            InitialSymmetricStacks(30),
+            InitialSymmetricStacks(25),
+            InitialSymmetricStacks(24),
+            InitialSymmetricStacks(23),
+            InitialSymmetricStacks(22),
+            InitialSymmetricStacks(21),
+            InitialSymmetricStacks(20),
+            InitialSymmetricStacks(19),
+            InitialSymmetricStacks(18),
+            InitialSymmetricStacks(17),
+            InitialSymmetricStacks(16),
+            InitialSymmetricStacks(15),
+            InitialSymmetricStacks(14.5),
+            InitialSymmetricStacks(14),
+            InitialSymmetricStacks(13.5),
+            InitialSymmetricStacks(13),
+            InitialSymmetricStacks(12.5),
+            InitialSymmetricStacks(12),
+            InitialSymmetricStacks(11.5),
+            InitialSymmetricStacks(11),
+            InitialSymmetricStacks(10.5),
+            InitialSymmetricStacks(10),
+            InitialSymmetricStacks(9.5),
+            InitialSymmetricStacks(9),
+            InitialSymmetricStacks(8.5),
+            InitialSymmetricStacks(8),
+            InitialSymmetricStacks(7.5),
+            InitialSymmetricStacks(7),
+            InitialSymmetricStacks(6.5),
+            InitialSymmetricStacks(6),
+            InitialSymmetricStacks(5.5),
+            InitialSymmetricStacks(5),
+            InitialSymmetricStacks(4.5),
+            InitialSymmetricStacks(4),
+            InitialSymmetricStacks(3.5),
+            InitialSymmetricStacks(3),
+            InitialSymmetricStacks(2.5),
+            InitialSymmetricStacks(2),
+            InitialSymmetricStacks(1.5),
+            InitialSymmetricStacks(1)
+        ]
+
+        return possible_stacks
 
     def generate_parameters(self) -> dict[str, str]:
-        pass
+        return {"gametype": "HuSngSimple_V3"}
 
 
 class BuilderFormatGtoWizard:
