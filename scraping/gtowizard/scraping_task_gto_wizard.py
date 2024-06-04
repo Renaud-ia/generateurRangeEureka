@@ -2,6 +2,7 @@ import requests
 
 from poker import RangePoker
 from .format_gto_wizard import FormatGtoWizard
+from .poker_elements_gto_wizard import ActionPokerGtoWizard, RangeGtoWizard
 from .situation_gto_wizard import SituationPokerGtoWizard
 from ..scraping_exceptions import BearerNotValid, ErreurRequete
 from ..scraping_task import ScrapingTask
@@ -32,9 +33,9 @@ class ScrapingTaskGtoWizard(ScrapingTask):
             "Authorization": f"Bearer {bearer}"
         }
 
-        params = self.situation.generate_parameters()
+        params = self.situation.generate_parameters() | self.format_poker.generate_parameters()
 
-        response = requests.post(
+        response = requests.get(
             ScrapingTaskGtoWizard.scraping_url,
             params=params,
             headers=headers)
@@ -45,7 +46,7 @@ class ScrapingTaskGtoWizard(ScrapingTask):
         elif response.status_code != 200:
             raise ErreurRequete(f"Réponse du serveur: {response}")
 
-        return self._extract_ranges(response)
+        return self._extract_ranges(response.json())
 
     def _save_ranges(self, ranges: dict[SituationPokerGtoWizard, RangePoker]):
         for situation, range_poker in ranges.items():
@@ -54,4 +55,22 @@ class ScrapingTaskGtoWizard(ScrapingTask):
         self.enregistreur.terminer_enregistrement()
 
     def _extract_ranges(self, response) -> dict[SituationPokerGtoWizard, RangePoker]:
-        pass
+        extracted_ranges: dict[SituationPokerGtoWizard, RangePoker] = {}
+
+        solutions: list = response["solutions"]
+
+        for action in solutions:
+            code_action: str = action["action"]["code"]
+            betsize: float = float(action["action"]["betsize"])
+
+            action_convertie: ActionPokerGtoWizard = ActionPokerGtoWizard(code_action, betsize)
+
+            range_as_float: list[float] = action["strategy"]
+            range_convertie: RangeGtoWizard = RangeGtoWizard(range_as_float)
+
+            nouvelle_situation = self.situation.copie_profonde()
+            nouvelle_situation.ajouter_action(action_convertie)
+
+            extracted_ranges[nouvelle_situation] = range_convertie
+
+        return extracted_ranges

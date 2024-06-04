@@ -1,19 +1,18 @@
 import logging
 from typing import Optional
 
-from .gtowizard.format_gto_wizard import FormatGtoWizard
-from .gtowizard.situation_gto_wizard import SituationPokerGtoWizard
+from .gtowizard import FormatGtoWizard, SituationPokerGtoWizard, ScrapingTaskGtoWizard, TokenManagerGtoWizard
 from .scraping_exceptions import BearerNotValid
-from .gtowizard.scraping_task_gto_wizard import ScrapingTaskGtoWizard
 
 logger = logging.getLogger(__name__)
 
 
 class ScraperGtoWizard:
-    def __init__(self, format_a_scraper: FormatGtoWizard, initial_bearer: Optional[str] = None):
+    def __init__(self, format_a_scraper: FormatGtoWizard):
         self.format_gto_wizard = format_a_scraper
         self.scraping_tasks: list[ScrapingTaskGtoWizard] = []
-        self.bearer = initial_bearer
+        self.token_getter = TokenManagerGtoWizard()
+        self.bearer = self.token_getter.get_token()
 
         self.initialiser_tasks()
 
@@ -25,6 +24,7 @@ class ScraperGtoWizard:
             self.scraping_tasks.append(tache_initiale)
 
     def scrap(self):
+        # TODO : vérifier qu'on a pas déjà fait cette tâche et marquer la tâche comme enregistrée à la fin
         while len(self.scraping_tasks) > 0:
             scraping_task = self.scraping_tasks.pop()
 
@@ -33,15 +33,10 @@ class ScraperGtoWizard:
 
             except BearerNotValid:
                 logger.info("Le bearer n'est pas valide")
-                print("Le bearer n'est pas valide")
-                self.bearer = self.ask_bearer()
+                self.bearer = self.token_getter.refresh_token()
                 self.scraping_tasks.append(scraping_task)
                 continue
 
             except Exception as e:
                 logger.critical("Une erreur critique est survenue durant le scraping", e)
                 break
-
-    @staticmethod
-    def ask_bearer() -> str:
-        return input("Entrez un bearer pour le scraping")

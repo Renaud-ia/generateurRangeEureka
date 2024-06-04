@@ -10,8 +10,9 @@ class InitialStacks(ABC):
 
 
 class InitialSymmetricStacks(InitialStacks):
-    def __init__(self, amount_stack: int):
+    def __init__(self, amount_stack: float):
         pass
+
     def n_initial_players(self):
         pass
 
@@ -28,5 +29,12 @@ class SituationPoker:
         self.actions = actions
         self.initial_stacks = initial_stacks
 
+    def ajouter_action(self, action_poker: ActionPoker):
+        self.actions.append(action_poker)
+
     def encode(self):
+        pass
+
+    def copie_profonde(self) -> 'SituationPoker':
+        # todo
         pass

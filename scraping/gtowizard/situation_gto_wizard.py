@@ -18,3 +18,8 @@ class SituationPokerGtoWizard(SituationPoker, ConvertInParameters):
     def generate_parameters(self) -> dict[str, str]:
         # todo
         return {}
+
+
+class SituationMttPokerGtoWizard(SituationPokerGtoWizard):
+    pass
+

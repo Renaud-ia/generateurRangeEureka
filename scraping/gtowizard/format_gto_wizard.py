@@ -38,7 +38,35 @@ class MttStandardGtoWizard(FormatGtoWizard):
         return {"gametype": "MTTGeneral"}
 
 
-# todo ajouter tous les formats à scraper
+class CashGameClassicGtoWizard(FormatGtoWizard):
+    def __init__(self):
+        super().__init__(
+            Variante.TEXAS_HOLDEM_NO_LIMIT,
+            TypeJeuPoker.CASH_GAME,
+            6
+        )
+
+    def possibles_stack_sizes(self) -> list[InitialStacks]:
+        pass
+
+    def generate_parameters(self) -> dict[str, str]:
+        pass
+
+
+class SpinClassicGtoWizard(FormatGtoWizard):
+    def __init__(self):
+        super().__init__(
+            Variante.TEXAS_HOLDEM_NO_LIMIT,
+            TypeJeuPoker.SPIN,
+            3
+        )
+
+    def possibles_stack_sizes(self) -> list[InitialStacks]:
+        pass
+
+    def generate_parameters(self) -> dict[str, str]:
+        pass
+
 
 class BuilderFormatGtoWizard:
     @staticmethod
