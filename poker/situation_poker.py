@@ -1,6 +1,7 @@
+import copy
 from abc import ABC, abstractmethod
 
-from poker.action_poker import ActionPoker
+from poker.action_poker import ActionPoker, Move
 
 
 class InitialStacks(ABC):
@@ -21,6 +22,9 @@ class InitialSymmetricStacks(InitialStacks):
     def get_common_stack(self):
         return self.initial_stack
 
+    def __str__(self):
+        return f"{self.initial_stack}BB"
+
 
 class InitialNonSymmetricStacks(InitialStacks):
     pass
@@ -36,6 +40,14 @@ class SituationPoker:
     def ajouter_action(self, action_poker: ActionPoker):
         self.actions.append(action_poker)
 
-    def encode(self):
-        #todo
-        pass
+    def to_key(self):
+        gen_key: str = self.initial_stacks.__str__() + "_"
+        for index, action in enumerate(self.actions):
+            gen_key += f"{action}"
+            if index < len(self.actions) - 1:
+                gen_key += "-"
+
+        return gen_key
+
+    def __str__(self):
+        return f"SITUATION {self.initial_stacks}, {self.actions}"

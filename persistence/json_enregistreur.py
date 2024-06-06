@@ -22,10 +22,10 @@ class JsonEnregistreur(Enregistreur):
         self.donnees["statut"] = statut
 
     def ajouter_range(self, situation: SituationPoker, poker_range: RangePoker) -> bool:
-        if situation.encode() in self.donnees:
+        if situation.to_key() in self.donnees:
             return False
 
-        self.donnees[situation.encode()] = poker_range.to_dict()
+        self.donnees[situation.to_key()] = poker_range.to_dict()
         return True
 
     def enregistrement_termine(self) -> bool:

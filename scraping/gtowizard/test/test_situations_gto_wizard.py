@@ -2,6 +2,7 @@ import unittest
 from typing import Union
 
 from poker import InitialSymmetricStacks, ActionPoker, Move
+from scraping.gtowizard.poker_elements_gto_wizard import ActionPokerGtoWizard
 from scraping.gtowizard.situation_gto_wizard import SituationPokerGtoWizard, SituationMttPokerGtoWizard
 
 
@@ -26,10 +27,10 @@ class TestFormatGtoWizardMttStandard100BBSymetric(unittest.TestCase):
         self.assertDictEqual(generated_args, expected_args,
                              "Les arguments générés ne correspondent pas à ceux attendus")
 
-    def ajout_actions_genere_bons_arguments(self):
-        action1: ActionPoker = ActionPoker(Move.RAISE, 2.3)
-        action2: ActionPoker = ActionPoker(Move.FOLD)
-        action3: ActionPoker = ActionPoker(Move.RAISE_ALL_IN)
+    def test_ajout_actions_genere_bons_arguments(self):
+        action1: ActionPoker = ActionPokerGtoWizard("R", 2.3)
+        action2: ActionPoker = ActionPokerGtoWizard("F", 0)
+        action3: ActionPoker = ActionPokerGtoWizard("RAI", 80)
 
         self.situation.ajouter_action(action1)
         self.situation.ajouter_action(action2)
@@ -62,10 +63,10 @@ class TestCashGameClassic250BBSymetric(unittest.TestCase):
         self.assertDictEqual(generated_args, expected_args,
                              "Les arguments générés ne correspondent pas à ceux attendus")
 
-    def ajout_actions_genere_bons_arguments(self):
-        action1: ActionPoker = ActionPoker(Move.RAISE, 2.3)
-        action2: ActionPoker = ActionPoker(Move.FOLD)
-        action3: ActionPoker = ActionPoker(Move.RAISE_ALL_IN)
+    def test_ajout_actions_genere_bons_arguments(self):
+        action1: ActionPoker = ActionPokerGtoWizard("R", 2.3)
+        action2: ActionPoker = ActionPokerGtoWizard("F", 0)
+        action3: ActionPoker = ActionPokerGtoWizard("RAI", 80)
 
         self.situation.ajouter_action(action1)
         self.situation.ajouter_action(action2)
@@ -98,10 +99,10 @@ class TestSpinClassicFloatBBSymetric(unittest.TestCase):
         self.assertDictEqual(generated_args, expected_args,
                              "Les arguments générés ne correspondent pas à ceux attendus")
 
-    def ajout_actions_genere_bons_arguments(self):
-        action1: ActionPoker = ActionPoker(Move.RAISE, 2.3)
-        action2: ActionPoker = ActionPoker(Move.FOLD)
-        action3: ActionPoker = ActionPoker(Move.RAISE_ALL_IN)
+    def test_ajout_actions_genere_bons_arguments(self):
+        action1: ActionPoker = ActionPokerGtoWizard("R", 2.3)
+        action2: ActionPoker = ActionPokerGtoWizard("F", 0)
+        action3: ActionPoker = ActionPokerGtoWizard("RAI", 80)
 
         self.situation.ajouter_action(action1)
         self.situation.ajouter_action(action2)

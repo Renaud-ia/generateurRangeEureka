@@ -4,16 +4,27 @@ from poker import ActionPoker, Move, RangePoker
 class ActionPokerGtoWizard(ActionPoker):
     converting_moves: dict[str, Move] = {
         "F": Move.FOLD,
+        "C": Move.CALL,
         "R": Move.RAISE,
         "RAI": Move.RAISE_ALL_IN
     }
 
-    def __init__(self, move: str, betsize: float):
-        super().__init__(ActionPokerGtoWizard.converting_moves[move], betsize)
+    def __init__(self, move_code_gto_wizard: str, betsize: float):
+        super().__init__(ActionPokerGtoWizard.converting_moves[move_code_gto_wizard], betsize)
+        self.move_code_gto_wizard = move_code_gto_wizard
+
+    def __str__(self):
+        super(ActionPoker, self).__str__()
+
+    def to_code_gto_wizard(self):
+        if self.move_code_gto_wizard == "RAI":
+            return self.move_code_gto_wizard
+        else:
+            return self.move_code_gto_wizard + (str(self.betsize) if self.betsize > 0 else "")
 
 
 class RangeGtoWizard(RangePoker):
-    ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"]
+    ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "A", "K", "Q", "J", "T"]
 
     def __init__(self, range_non_formatee: list[float]):
         super().__init__()

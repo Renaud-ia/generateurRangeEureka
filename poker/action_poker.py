@@ -15,3 +15,6 @@ class ActionPoker:
 
     def __str__(self):
         return self.move.value + str(self.betsize)
+
+    def __repr__(self):
+        return self.move.value + str(self.betsize)

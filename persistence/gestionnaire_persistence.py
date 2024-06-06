@@ -11,7 +11,7 @@ class GestionnairePersistence:
 
     @classmethod
     def recuperer_enregistreur(cls, format_poker: FormatPoker) -> Enregistreur:
-        return cls.connecteur_persistence(format_poker.encode())
+        return cls.connecteur_persistence(format_poker.to_key())
 
     @classmethod
     def recuperer_tous_les_enregistreurs(cls) -> list[Enregistreur]:

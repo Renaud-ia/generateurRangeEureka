@@ -24,5 +24,5 @@ class FormatPoker:
         self.n_joueurs = n_joueurs
 
     # génère une string pour persistence
-    def encode(self) -> str:
+    def to_key(self) -> str:
         return f"{self.variante.value}_{self.type_jeu.value}_{self.n_joueurs}"

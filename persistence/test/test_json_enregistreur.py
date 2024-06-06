@@ -4,6 +4,7 @@ import unittest
 from unittest.mock import MagicMock
 
 from persistence.json_enregistreur import JsonEnregistreur, SituationPoker, RangePoker
+from poker import InitialSymmetricStacks
 
 
 class TestJsonEnregistreur(unittest.TestCase):
@@ -12,6 +13,7 @@ class TestJsonEnregistreur(unittest.TestCase):
         self.enregistreur = JsonEnregistreur(self.variante_poker)
         self.enregistreur.adresse_fichier = "test.json"
         self.enregistreur.donnees = {"statut": False}
+        self.stacks = InitialSymmetricStacks(25)
 
     def tearDown(self):
         if os.path.exists(self.enregistreur.adresse_fichier):
@@ -38,10 +40,10 @@ class TestJsonEnregistreur(unittest.TestCase):
 
     def test_ajouter_range(self):
         # Mock SituationPoker et RangePoker
-        situation = SituationPoker()
+        situation = SituationPoker(self.stacks)
 
-        # Simuler le comportement de encode()
-        situation.encode = MagicMock(return_value="test_key")
+        # Simuler le comportement de to_key()
+        situation.to_key = MagicMock(return_value="test_key")
 
         poker_range = RangePoker()
         poker_range.to_dict = MagicMock({'AA': 0.6})

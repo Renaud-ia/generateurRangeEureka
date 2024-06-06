@@ -1,5 +1,10 @@
+import logging
+import sys
+
 from scraping import ScraperGtoWizard
 from scraping.gtowizard import BuilderFormatGtoWizard, FormatGtoWizard
+
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 if __name__ == "__main__":
     formats_a_scraper: list[FormatGtoWizard] = BuilderFormatGtoWizard.generate_all_formats()
