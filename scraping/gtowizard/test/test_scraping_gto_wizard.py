@@ -48,7 +48,7 @@ class TestExtractingData(unittest.TestCase):
                 },
                 {
                     "action": {
-                        "code": "R",
+                        "code": "R2.3",
                         "type": "RAISE",
                         "betsize": "2.3",
                         "all-in": False,
@@ -78,7 +78,7 @@ class TestExtractingData(unittest.TestCase):
                 new_situation.generate_parameters()["preflop_actions"]
             )
 
-    def test_deux_actions_genere_bons_parametres(self):
+    def test_deux_fold_genere_bons_parametres(self):
         expected_param = "F-F"
 
         response: dict = {

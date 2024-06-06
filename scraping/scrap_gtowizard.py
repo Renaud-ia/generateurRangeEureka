@@ -29,26 +29,25 @@ class ScraperGtoWizard:
 
     def scrap(self):
         if self.enregistreur.enregistrement_termine():
-            logger.info(f"Les ranges ont déjà été scrapées pour {format}")
+            logger.info(f"Les ranges ont déjà été scrapées pour {self.format_gto_wizard}")
 
         while len(self.scraping_tasks) > 0:
             scraping_task = self.scraping_tasks.pop()
 
             try:
-                self.scraping_tasks.extend(scraping_task.execute(self.bearer, self.enregistreur))
+                next_tasks: list[ScrapingTaskGtoWizard] = scraping_task.execute(self.bearer, self.enregistreur)
+                self.scraping_tasks.extend(next_tasks)
                 self.enregistreur.sauvegarder()
 
                 logger.info(f"Situation scrapée avec succès: {scraping_task}")
+                if not next_tasks:
+                    logger.info("Aucune action suivante disponible")
 
             except BearerNotValid:
                 logger.info(f"Le bearer n'est pas valide pour: {scraping_task}")
                 self.bearer = self.token_getter.refresh_token()
                 self.scraping_tasks.append(scraping_task)
                 continue
-
-            except Exception as e:
-                logger.critical(f"Une erreur critique est survenue durant le scraping: {e}")
-                break
 
         self.enregistreur.terminer_enregistrement()
 

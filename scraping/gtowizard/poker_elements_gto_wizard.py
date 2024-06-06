@@ -9,18 +9,12 @@ class ActionPokerGtoWizard(ActionPoker):
         "RAI": Move.RAISE_ALL_IN
     }
 
-    def __init__(self, move_code_gto_wizard: str, betsize: float):
+    def __init__(self, move_code_gto_wizard: str, betsize: float = 0):
         super().__init__(ActionPokerGtoWizard.converting_moves[move_code_gto_wizard], betsize)
         self.move_code_gto_wizard = move_code_gto_wizard
 
-    def __str__(self):
-        super(ActionPoker, self).__str__()
-
     def to_code_gto_wizard(self):
-        if self.move_code_gto_wizard == "RAI":
-            return self.move_code_gto_wizard
-        else:
-            return self.move_code_gto_wizard + (str(self.betsize) if self.betsize > 0 else "")
+        return self.move_code_gto_wizard + (str(self.betsize) if self.move == Move.RAISE else "")
 
 
 class RangeGtoWizard(RangePoker):
