@@ -108,6 +108,11 @@ class TestJsonEnregistreur(unittest.TestCase):
         # Mock SituationPoker et RangePoker
         situation_initiale = SituationPoker(self.stacks)
 
+        for _ in range(random.randint(0, 5)):
+            situation_initiale.ajouter_action(self.get_random_action())
+
+        print(situation_initiale.actions)
+
         situations_posterieures: list[SituationPoker] = []
 
         for action in self.randoms_actions:

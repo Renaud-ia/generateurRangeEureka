@@ -4,7 +4,7 @@ from typing import Any, Optional
 import requests
 
 from persistence import Enregistreur
-from poker import RangePoker
+from poker import RangePoker, SituationPoker
 from .format_gto_wizard import FormatGtoWizard
 from .poker_elements_gto_wizard import ActionPokerGtoWizard, RangeGtoWizard
 from .situation_gto_wizard import SituationPokerGtoWizard
@@ -49,6 +49,9 @@ class ScrapingTaskGtoWizard:
         self.situation = situation_poker
 
     def execute(self, bearer: str, enregistreur: Enregistreur) -> list['ScrapingTaskGtoWizard']:
+        if enregistreur.situation_deja_enregistree(self.situation):
+            return self.extract_tasks_from_persistence(enregistreur)
+
         response: dict = self._request_endpoint(bearer)
 
         if not response:
@@ -65,6 +68,18 @@ class ScrapingTaskGtoWizard:
             next_tasks.append(new_task)
 
         return next_tasks
+
+    def extract_tasks_from_persistence(self, enregistreur) -> list['ScrapingTaskGtoWizard']:
+        situations_suivantes: list[SituationPoker] = enregistreur.recuperer_situations_suivantes(self.situation)
+
+        taches_suivantes: list['ScrapingTaskGtoWizard'] = []
+
+        for situation in situations_suivantes:
+            new_situation: SituationPokerGtoWizard = SituationPokerGtoWizard.from_situation_poker(situation)
+            new_task: ScrapingTaskGtoWizard = ScrapingTaskGtoWizard(self.format_poker, new_situation)
+            taches_suivantes.append(new_task)
+
+        return taches_suivantes
 
     def _request_endpoint(self, bearer: str) -> dict:
         headers = {

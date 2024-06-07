@@ -41,6 +41,12 @@ class SituationPokerGtoWizard(SituationPoker, ConvertInParameters):
 
         return args
 
+    @classmethod
+    def from_situation_poker(cls, situation_poker: SituationPoker):
+        # Créer une nouvelle instance de SituationPokerGtoWizard avec les mêmes attributs que situation_poker
+        return cls(initial_stacks=situation_poker.initial_stacks,
+                   actions=situation_poker.actions)
+
     def __str__(self):
         return super(SituationPoker, self).__str__()
 
