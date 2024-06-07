@@ -12,7 +12,7 @@ class TestJsonEnregistreur(unittest.TestCase):
         self.variante_poker = "Texas Hold'em"
         self.enregistreur = JsonEnregistreur(self.variante_poker)
         self.enregistreur.adresse_fichier = "test.json"
-        self.enregistreur.donnees = {"statut": False}
+        self.enregistreur.donnees = {"termine": False}
         self.stacks = InitialSymmetricStacks(25)
 
     def tearDown(self):
@@ -36,7 +36,7 @@ class TestJsonEnregistreur(unittest.TestCase):
     def test_fixer_statut(self):
         # Fixer le statut
         self.enregistreur._fixer_statut(True)
-        self.assertTrue(self.enregistreur.donnees["statut"])
+        self.assertTrue(self.enregistreur.donnees["termine"])
 
     def test_ajouter_range(self):
         # Mock SituationPoker et RangePoker

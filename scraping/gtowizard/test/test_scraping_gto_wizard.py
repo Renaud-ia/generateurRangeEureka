@@ -21,7 +21,7 @@ class TestExtractingData(unittest.TestCase):
     def test_chaque_action_genere_bons_parametres(self):
         expected_params = [
             "F",
-            "C2.3",
+            "C",
             "R2.3",
             "RAI"
         ]

@@ -1,3 +1,5 @@
+import re
+
 from poker import ActionPoker, Move, RangePoker
 
 
@@ -10,8 +12,8 @@ class ActionPokerGtoWizard(ActionPoker):
     }
 
     def __init__(self, move_code_gto_wizard: str, betsize: float = 0):
-        super().__init__(ActionPokerGtoWizard.converting_moves[move_code_gto_wizard], betsize)
-        self.move_code_gto_wizard = move_code_gto_wizard
+        super().__init__(ActionPokerGtoWizard.converting_moves[re.sub("[^a-zA-Z]", "", move_code_gto_wizard)], betsize)
+        self.move_code_gto_wizard = re.sub("[^a-zA-Z]", "", move_code_gto_wizard)
 
     def to_code_gto_wizard(self):
         return self.move_code_gto_wizard + (str(self.betsize) if self.move == Move.RAISE else "")
