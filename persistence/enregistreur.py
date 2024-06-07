@@ -29,9 +29,17 @@ class Enregistreur(ABC):
         raise NotImplementedError()
 
     @abstractmethod
+    def situation_deja_enregistree(self, situation: SituationPoker) -> bool:
+        raise NotImplementedError()
+
+    @abstractmethod
     def sauvegarder(self) -> None:
         raise NotImplementedError()
 
     @abstractmethod
     def deja_scrape(self) -> bool:
+        raise NotImplementedError()
+
+    @abstractmethod
+    def recuperer_situations_suivantes(self, situation_copie) -> list[SituationPoker]:
         raise NotImplementedError()

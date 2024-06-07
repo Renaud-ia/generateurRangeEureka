@@ -21,6 +21,9 @@ class JsonEnregistreur(Enregistreur):
     def _fixer_statut(self, statut: bool) -> None:
         self.donnees["termine"] = statut
 
+    def situation_deja_enregistree(self, situation: SituationPoker) -> bool:
+        return False
+
     def ajouter_range(self, situation: SituationPoker, poker_range: RangePoker) -> bool:
         if situation.to_key() in self.donnees:
             return False
@@ -34,3 +37,6 @@ class JsonEnregistreur(Enregistreur):
     def sauvegarder(self) -> None:
         with open(self.adresse_fichier, 'w', encoding='utf-8') as fichier:
             json.dump(self.donnees, fichier, indent=4)
+
+    def recuperer_situations_suivantes(self, situation_copie) -> list[SituationPoker]:
+        return []
