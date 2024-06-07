@@ -59,11 +59,11 @@ class TestJsonEnregistreur(unittest.TestCase):
 
     def test_enregistrement_termine(self):
         # Vérifier le statut initial
-        self.assertFalse(self.enregistreur.enregistrement_termine())
+        self.assertFalse(self.enregistreur.deja_scrape())
 
         # Fixer le statut et vérifier
         self.enregistreur._fixer_statut(True)
-        self.assertTrue(self.enregistreur.enregistrement_termine())
+        self.assertTrue(self.enregistreur.deja_scrape())
 
 
 if __name__ == '__main__':

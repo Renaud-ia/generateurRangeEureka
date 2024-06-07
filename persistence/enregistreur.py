@@ -33,5 +33,5 @@ class Enregistreur(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def enregistrement_termine(self) -> bool:
+    def deja_scrape(self) -> bool:
         raise NotImplementedError()

@@ -19,7 +19,7 @@ class JsonEnregistreur(Enregistreur):
             return json.load(fichier)
 
     def _fixer_statut(self, statut: bool) -> None:
-        self.donnees["statut"] = statut
+        self.donnees["termine"] = statut
 
     def ajouter_range(self, situation: SituationPoker, poker_range: RangePoker) -> bool:
         if situation.to_key() in self.donnees:
@@ -28,8 +28,8 @@ class JsonEnregistreur(Enregistreur):
         self.donnees[situation.to_key()] = poker_range.to_dict()
         return True
 
-    def enregistrement_termine(self) -> bool:
-        return self.donnees["statut"]
+    def deja_scrape(self) -> bool:
+        return self.donnees["termine"]
 
     def sauvegarder(self) -> None:
         with open(self.adresse_fichier, 'w', encoding='utf-8') as fichier:

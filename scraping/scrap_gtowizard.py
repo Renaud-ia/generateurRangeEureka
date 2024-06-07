@@ -28,7 +28,7 @@ class ScraperGtoWizard:
             self.scraping_tasks.append(tache_initiale)
 
     def scrap(self):
-        if self.enregistreur.enregistrement_termine():
+        if self.enregistreur.deja_scrape():
             logger.info(f"Les ranges ont déjà été scrapées pour {self.format_gto_wizard}")
 
         while len(self.scraping_tasks) > 0:

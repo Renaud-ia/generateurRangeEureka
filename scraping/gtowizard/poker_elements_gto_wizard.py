@@ -18,7 +18,9 @@ class ActionPokerGtoWizard(ActionPoker):
 
 
 class RangeGtoWizard(RangePoker):
-    ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "A", "K", "Q", "J", "T"]
+    # important, l'ordre d'encodage et l'ordre de génération pour chaque rank est différent
+    ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"]
+    sorted_ranks = sorted(ranks)
 
     def __init__(self, range_non_formatee: list[float]):
         super().__init__()
@@ -34,14 +36,14 @@ class RangeGtoWizard(RangePoker):
     def _generate_all_combos_sorted() -> list[str]:
         all_combos: list[str] = []
 
-        for i in range(len(RangeGtoWizard.ranks)):
-            for j in range(i + 1):
-                if i == j:
-                    all_combos.append(RangeGtoWizard.ranks[i] + RangeGtoWizard.ranks[j])
-
+        for sorted_rank in RangeGtoWizard.sorted_ranks:
+            initial_index = RangeGtoWizard.ranks.index(sorted_rank)
+            for j in range(initial_index + 1):
+                if initial_index == j:
+                    all_combos.append(sorted_rank + RangeGtoWizard.ranks[j])
                 else:
-                    all_combos.append(RangeGtoWizard.ranks[i] + RangeGtoWizard.ranks[j] + "o")
-                    all_combos.append(RangeGtoWizard.ranks[i] + RangeGtoWizard.ranks[j] + "s")
+                    all_combos.append(sorted_rank + RangeGtoWizard.ranks[j] + "o")
+                    all_combos.append(sorted_rank + RangeGtoWizard.ranks[j] + "s")
 
         return all_combos
 
