@@ -3,7 +3,7 @@ import logging
 from persistence import GestionnairePersistence
 from .gtowizard import FormatGtoWizard, SituationPokerGtoWizard, ScrapingTaskGtoWizard, TokenManagerGtoWizard
 from .gtowizard.situation_gto_wizard import BuilderSituationGtoWizard
-from .scraping_exceptions import BearerNotValid
+from .scraping_exceptions import BearerNotValid, LimitConnexionReached
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -46,6 +46,12 @@ class ScraperGtoWizard:
             except BearerNotValid:
                 logger.info(f"Le bearer n'est pas valide pour: {scraping_task}")
                 self.bearer = self.token_getter.refresh_token()
+                self.scraping_tasks.append(scraping_task)
+                continue
+
+            except LimitConnexionReached:
+                logger.info("Le compte a été bloqué car trop de connexions")
+                self.bearer = self.token_getter.get_new_access()
                 self.scraping_tasks.append(scraping_task)
                 continue
 

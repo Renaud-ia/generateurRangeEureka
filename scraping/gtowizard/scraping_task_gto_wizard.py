@@ -8,7 +8,7 @@ from poker import RangePoker
 from .format_gto_wizard import FormatGtoWizard
 from .poker_elements_gto_wizard import ActionPokerGtoWizard, RangeGtoWizard
 from .situation_gto_wizard import SituationPokerGtoWizard
-from ..scraping_exceptions import BearerNotValid, ErreurRequete
+from ..scraping_exceptions import BearerNotValid, ErreurRequete, LimitConnexionReached
 
 
 class ExtractingData:
@@ -76,10 +76,14 @@ class ScrapingTaskGtoWizard:
         response = requests.get(
             ScrapingTaskGtoWizard.scraping_url,
             params=params,
-            headers=headers)
+            headers=headers,
+        )
 
         if response.status_code == 401:
             raise BearerNotValid(f"Réponse du serveur: {response}")
+
+        elif response.status_code == 429:
+            raise LimitConnexionReached(f"Compte bloqué car trop de connexions: {response}")
 
         # si pas de board, on a un status_code 204 au flop
         elif response.status_code == 204:

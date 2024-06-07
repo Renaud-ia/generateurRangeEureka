@@ -13,3 +13,8 @@ class TokenManagerGtoWizard:
     @staticmethod
     def _obtain_token():
         return input("Entrez un bearer pour le scraping :\n")
+
+    def get_new_access(self):
+        print("Le compte a été bloqué, entrez un bearer pour un nouveau compte")
+        self.token = self._obtain_token()
+        return self.token
