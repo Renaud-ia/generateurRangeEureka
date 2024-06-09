@@ -59,6 +59,28 @@ class SituationPoker:
     def ajouter_action(self, action_poker: ActionPoker):
         self.actions.append(action_poker)
 
+    def is_leaf(self, n_players: int) -> bool:
+        if all(action.move == Move.FOLD for action in self.actions) and len(self.actions) == n_players - 1:
+            return True
+
+        if len(self.actions) < n_players:
+            return False
+
+        raises_indexes: list[int] = [index for index, action in enumerate(self.actions)
+                                     if action.move == Move.RAISE or action.move == Move.RAISE_ALL_IN]
+
+        if len(raises_indexes) == 0:
+            return len(self.actions) == n_players
+
+        players_not_played: int = max(0, n_players - len(self.actions))
+        last_raise_index = max(raises_indexes)
+        n_players_remaining_after_raise: int = 0
+        for action in self.actions[:last_raise_index]:
+            if action.move != Move.FOLD and action.move != Move.RAISE_ALL_IN:
+                n_players_remaining_after_raise += 1
+
+        return len(self.actions[last_raise_index + 1:]) >= (n_players_remaining_after_raise + players_not_played)
+
     def to_keys(self) -> (str, str, str):
         return self.to_stack_key(), self.to_situation_key(), self.to_action_key()
 

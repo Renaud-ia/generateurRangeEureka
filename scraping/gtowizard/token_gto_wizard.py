@@ -1,6 +1,6 @@
 class TokenManagerGtoWizard:
     def __init__(self):
-        self.token: str = self._obtain_token()
+        self.token: str = ""
 
     def get_token(self) -> str:
         return self.token

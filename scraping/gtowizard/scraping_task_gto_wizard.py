@@ -54,6 +54,10 @@ class ScrapingTaskGtoWizard:
             print("situation déjà enregistrée")
             return self.extract_tasks_from_persistence(enregistreur)
 
+        if self.situation.is_leaf(self.format_poker.n_joueurs):
+            print("Leaf trouvée")
+            return []
+
         response: dict = self._request_endpoint(bearer)
 
         if not response:

@@ -55,16 +55,6 @@ class TestJsonEnregistreur(unittest.TestCase):
         self.enregistreur._fixer_statut(True)
         self.assertTrue(self.enregistreur.donnees["termine"])
 
-    def test_ajout_range(self):
-        # Mock SituationPoker et RangePoker
-        situation = SituationPoker(self.stacks)
-        situation.ajouter_action(self.get_random_action())
-
-        self.assertFalse(self.enregistreur.situation_deja_enregistree(situation))
-
-        self.enregistreur.ajouter_range(situation, self.poker_range)
-        self.assertTrue(self.enregistreur.situation_deja_enregistree(situation))
-
     def test_doublon_impossible(self):
         # Mock SituationPoker et RangePoker
         situation = SituationPoker(self.stacks)
@@ -92,6 +82,7 @@ class TestJsonEnregistreur(unittest.TestCase):
 
         situation_suivante = copy.deepcopy(situation)
         situation_suivante.ajouter_action(self.get_random_action())
+        self.enregistreur.ajouter_range(situation_suivante, self.poker_range)
 
         self.assertTrue(self.enregistreur.situation_deja_enregistree(situation))
         self.assertFalse(self.enregistreur.situation_deja_enregistree(situation_suivante))

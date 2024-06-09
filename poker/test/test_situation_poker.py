@@ -27,5 +27,66 @@ class TestSituationPoker(unittest.TestCase):
         self.situation.ajouter_action(action)
         self.assertTrue(len(self.situation.actions) == 1)
 
+    def test_deux_fold_is_leaf(self):
+        n_joueurs = 3
+        fold_action = ActionPoker(Move.FOLD)
+
+        self.situation.ajouter_action(fold_action)
+        self.assertFalse(self.situation.is_leaf(n_joueurs))
+        self.situation.ajouter_action(fold_action)
+
+        self.assertTrue(self.situation.is_leaf(n_joueurs))
+
+    def test_call_call_call_is_leaf(self):
+        n_joueurs = 3
+
+        self.situation.ajouter_action(ActionPoker(Move.CALL))
+        self.assertFalse(self.situation.is_leaf(n_joueurs))
+        self.situation.ajouter_action(ActionPoker(Move.CALL))
+        self.assertFalse(self.situation.is_leaf(n_joueurs))
+        self.situation.ajouter_action(ActionPoker(Move.CALL))
+
+        self.assertTrue(self.situation.is_leaf(n_joueurs))
+
+    def test_raise_call_call_is_leaf(self):
+        n_joueurs = 3
+
+        self.situation.ajouter_action(ActionPoker(Move.RAISE))
+        self.assertFalse(self.situation.is_leaf(n_joueurs))
+        self.situation.ajouter_action(ActionPoker(Move.CALL))
+        self.assertFalse(self.situation.is_leaf(n_joueurs))
+        self.situation.ajouter_action(ActionPoker(Move.CALL))
+
+        self.assertTrue(self.situation.is_leaf(n_joueurs))
+
+    def test_raise_call_raise_not_leaf(self):
+        n_joueurs = 3
+
+        self.situation.ajouter_action(ActionPoker(Move.RAISE))
+        self.assertFalse(self.situation.is_leaf(n_joueurs))
+        self.situation.ajouter_action(ActionPoker(Move.CALL))
+        self.assertFalse(self.situation.is_leaf(n_joueurs))
+        self.situation.ajouter_action(ActionPoker(Move.RAISE))
+        self.assertFalse(self.situation.is_leaf(n_joueurs))
+        self.situation.ajouter_action(ActionPoker(Move.CALL))
+        self.assertFalse(self.situation.is_leaf(n_joueurs))
+        self.situation.ajouter_action(ActionPoker(Move.CALL))
+        self.assertTrue(self.situation.is_leaf(n_joueurs))
+
+    def test_fold_all_in_call(self):
+        n_joueurs = 8
+
+        self.situation.ajouter_action(ActionPoker(Move.FOLD))
+        self.situation.ajouter_action(ActionPoker(Move.FOLD))
+        self.situation.ajouter_action(ActionPoker(Move.FOLD))
+        self.situation.ajouter_action(ActionPoker(Move.FOLD))
+        self.situation.ajouter_action(ActionPoker(Move.RAISE_ALL_IN))
+        self.situation.ajouter_action(ActionPoker(Move.CALL))
+        self.situation.ajouter_action(ActionPoker(Move.CALL))
+        self.assertFalse(self.situation.is_leaf(n_joueurs))
+        self.situation.ajouter_action(ActionPoker(Move.CALL))
+
+        self.assertTrue(self.situation.is_leaf(n_joueurs))
+
 
 
