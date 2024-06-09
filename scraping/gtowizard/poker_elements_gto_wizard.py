@@ -11,12 +11,18 @@ class ActionPokerGtoWizard(ActionPoker):
         "RAI": Move.RAISE_ALL_IN
     }
 
+    moves_to_code: dict[Move, str] = {value: key for key, value in converting_moves.items()}
+
     def __init__(self, move_code_gto_wizard: str, betsize: float = 0):
         super().__init__(ActionPokerGtoWizard.converting_moves[re.sub("[^a-zA-Z]", "", move_code_gto_wizard)], betsize)
         self.move_code_gto_wizard = re.sub("[^a-zA-Z]", "", move_code_gto_wizard)
 
     def to_code_gto_wizard(self):
         return self.move_code_gto_wizard + (str(self.betsize) if self.move == Move.RAISE else "")
+
+    @classmethod
+    def from_poker_action(cls, action: ActionPoker):
+        return cls(cls.moves_to_code[action.move], action.betsize)
 
 
 class RangeGtoWizard(RangePoker):

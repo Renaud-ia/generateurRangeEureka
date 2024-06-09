@@ -4,6 +4,11 @@ import os
 from poker import RangePoker, SituationPoker, FormatPoker
 
 
+class EntreeExisteDeja(Exception):
+    def __init__(self, message: str = ""):
+        super().__init__(message)
+
+
 class Enregistreur(ABC):
     def __init__(self, format_poker: str, nom_repertoire: str):
         os.makedirs(nom_repertoire, exist_ok=True)
@@ -25,7 +30,7 @@ class Enregistreur(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def ajouter_range(self, situation: SituationPoker, poker_range: RangePoker) -> bool:
+    def ajouter_range(self, situation: SituationPoker, poker_range: RangePoker) -> None:
         raise NotImplementedError()
 
     @abstractmethod

@@ -1,4 +1,5 @@
 import copy
+import time
 from typing import Any, Optional
 
 import requests
@@ -7,7 +8,7 @@ from persistence import Enregistreur
 from poker import RangePoker, SituationPoker
 from .format_gto_wizard import FormatGtoWizard
 from .poker_elements_gto_wizard import ActionPokerGtoWizard, RangeGtoWizard
-from .situation_gto_wizard import SituationPokerGtoWizard
+from .situation_gto_wizard import SituationPokerGtoWizard, SituationMttPokerGtoWizard
 from ..scraping_exceptions import BearerNotValid, ErreurRequete, LimitConnexionReached
 
 
@@ -50,6 +51,7 @@ class ScrapingTaskGtoWizard:
 
     def execute(self, bearer: str, enregistreur: Enregistreur) -> list['ScrapingTaskGtoWizard']:
         if enregistreur.situation_deja_enregistree(self.situation):
+            print("situation déjà enregistrée")
             return self.extract_tasks_from_persistence(enregistreur)
 
         response: dict = self._request_endpoint(bearer)
@@ -75,7 +77,10 @@ class ScrapingTaskGtoWizard:
         taches_suivantes: list['ScrapingTaskGtoWizard'] = []
 
         for situation in situations_suivantes:
-            new_situation: SituationPokerGtoWizard = SituationPokerGtoWizard.from_situation_poker(situation)
+            if isinstance(self.situation, SituationMttPokerGtoWizard):
+                new_situation: SituationPokerGtoWizard = SituationMttPokerGtoWizard.from_situation_poker(situation)
+            else:
+                new_situation: SituationPokerGtoWizard = SituationPokerGtoWizard.from_situation_poker(situation)
             new_task: ScrapingTaskGtoWizard = ScrapingTaskGtoWizard(self.format_poker, new_situation)
             taches_suivantes.append(new_task)
 

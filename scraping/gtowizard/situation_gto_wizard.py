@@ -1,5 +1,4 @@
-from poker import SituationPoker, InitialSymmetricStacks
-from poker import ActionPoker, Move
+from poker import SituationPoker, InitialSymmetricStacks, ActionPoker
 from poker import InitialStacks
 from . import FormatGtoWizard
 from .converting_url import ConvertInParameters
@@ -26,6 +25,9 @@ class SituationPokerGtoWizard(SituationPoker, ConvertInParameters):
 
         for index, action in enumerate(self.actions):
             if isinstance(action, ActionPokerGtoWizard):
+                args["preflop_actions"] += action.to_code_gto_wizard()
+            elif isinstance(action, ActionPoker):
+                action = ActionPokerGtoWizard.from_poker_action(action)
                 args["preflop_actions"] += action.to_code_gto_wizard()
             else:
                 raise TypeError("Invalid action type. All actions must be instances of ActionGtoWizard.")

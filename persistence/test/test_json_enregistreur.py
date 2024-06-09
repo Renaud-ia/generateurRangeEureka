@@ -6,6 +6,7 @@ import os
 import unittest
 from unittest.mock import MagicMock
 
+from persistence.enregistreur import EntreeExisteDeja
 from persistence.json_enregistreur import JsonEnregistreur, SituationPoker, RangePoker
 from poker import InitialSymmetricStacks, ActionPoker, Move
 
@@ -16,7 +17,7 @@ class TestJsonEnregistreur(unittest.TestCase):
         self.enregistreur = JsonEnregistreur(self.variante_poker)
         self.enregistreur.adresse_fichier = "test.json"
         self.enregistreur.donnees = {"termine": False}
-        self.stacks = InitialSymmetricStacks(25)
+        self.stacks = InitialSymmetricStacks(25.5)
 
         self.poker_range = RangePoker()
         self.poker_range.to_dict = MagicMock({'AA': 0.6})
@@ -54,64 +55,81 @@ class TestJsonEnregistreur(unittest.TestCase):
         self.enregistreur._fixer_statut(True)
         self.assertTrue(self.enregistreur.donnees["termine"])
 
-    def test_ajouter_range(self):
+    def test_ajout_range(self):
         # Mock SituationPoker et RangePoker
         situation = SituationPoker(self.stacks)
         situation.ajouter_action(self.get_random_action())
 
-        # Simuler le comportement de to_key()
-        situation.to_key = MagicMock(return_value="test_key")
+        self.assertFalse(self.enregistreur.situation_deja_enregistree(situation))
 
-        # Ajouter une range
-        result = self.enregistreur.ajouter_range(situation, self.poker_range)
-        self.assertTrue(result)
-        self.assertEqual(self.enregistreur.donnees["test_key"], self.poker_range.to_dict())
+        self.enregistreur.ajouter_range(situation, self.poker_range)
+        self.assertTrue(self.enregistreur.situation_deja_enregistree(situation))
 
-        # Ajouter la même range
-        result = self.enregistreur.ajouter_range(situation, self.poker_range)
-        self.assertFalse(result)
+    def test_doublon_impossible(self):
+        # Mock SituationPoker et RangePoker
+        situation = SituationPoker(self.stacks)
+        situation.ajouter_action(self.get_random_action())
+
+        self.enregistreur.ajouter_range(situation, self.poker_range)
+
+        with self.assertRaises(EntreeExisteDeja):
+            self.enregistreur.ajouter_range(situation, self.poker_range)
 
     def test_enregistrement_termine(self):
         # Vérifier le statut initial
         self.assertFalse(self.enregistreur.deja_scrape())
 
         # Fixer le statut et vérifier
-        self.enregistreur._fixer_statut(True)
+        self.enregistreur.terminer_enregistrement()
         self.assertTrue(self.enregistreur.deja_scrape())
 
     def test_situation_deja_scrapee(self):
         # Mock SituationPoker et RangePoker
         situation = SituationPoker(self.stacks)
-        situation_copie = copy.deepcopy(situation)
-
         situation.ajouter_action(self.get_random_action())
-
-        self.assertFalse(self.enregistreur.situation_deja_enregistree(situation))
 
         self.enregistreur.ajouter_range(situation, self.poker_range)
 
-        self.assertTrue(self.enregistreur.situation_deja_enregistree(situation_copie))
-        self.assertFalse(self.enregistreur.situation_deja_enregistree(situation))
+        situation_suivante = copy.deepcopy(situation)
+        situation_suivante.ajouter_action(self.get_random_action())
+
+        self.assertTrue(self.enregistreur.situation_deja_enregistree(situation))
+        self.assertFalse(self.enregistreur.situation_deja_enregistree(situation_suivante))
 
     def test_impossible_enregistrer_situation_sans_action(self):
         # Mock SituationPoker et RangePoker
         situation = SituationPoker(self.stacks)
-        situation.ajouter_action(self.get_random_action())
-
-        # Simuler le comportement de to_key()
-        situation.to_key = MagicMock(return_value="test_key")
 
         with self.assertRaises(ValueError):
             self.enregistreur.ajouter_range(situation, self.poker_range)
 
-    def test_on_genere_les_situations_suivantes_depuis_persistence(self):
+    def test_on_genere_les_situations_suivantes_depuis_persistence_root(self):
         # Mock SituationPoker et RangePoker
         situation_initiale = SituationPoker(self.stacks)
 
-        for _ in range(random.randint(0, 5)):
+        situations_posterieures: list[SituationPoker] = []
+
+        for action in self.randoms_actions:
+            situation_copie: SituationPoker = copy.deepcopy(situation_initiale)
+            situation_copie.ajouter_action(action)
+
+            situations_posterieures.append(situation_copie)
+            self.enregistreur.ajouter_range(situation_copie, self.poker_range)
+
+        print(situations_posterieures)
+
+        situations: list[SituationPoker] = self.enregistreur.recuperer_situations_suivantes(situation_initiale)
+
+        self.assertCountEqual(situations_posterieures, situations)
+
+    def test_on_genere_les_situations_suivantes_depuis_persistence_non_root(self):
+        # Mock SituationPoker et RangePoker
+        situation_initiale = SituationPoker(self.stacks)
+
+        for _ in range(random.randint(1, 5)):
             situation_initiale.ajouter_action(self.get_random_action())
 
-        print(situation_initiale.actions)
+        print(situation_initiale)
 
         situations_posterieures: list[SituationPoker] = []
 
@@ -123,6 +141,9 @@ class TestJsonEnregistreur(unittest.TestCase):
             self.enregistreur.ajouter_range(situation_copie, self.poker_range)
 
         situations: list[SituationPoker] = self.enregistreur.recuperer_situations_suivantes(situation_initiale)
+
+        print(situations)
+        print(situations_posterieures)
 
         self.assertCountEqual(situations_posterieures, situations)
 
