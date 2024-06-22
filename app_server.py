@@ -1,22 +1,30 @@
+import numpy as np
 from flask import Flask
+from keras.src.saving import load_model
 
-from ml.autoencodeur import AutoEncodeur
+from config import ConfigAutoEncodeur
 
 app = Flask(__name__)
 
-model = AutoEncodeur()
+model = load_model('model.keras')
+config = ConfigAutoEncodeur.load_config('model_config.yaml')
 
 
-@app.route('/')
+def predict(self, input_data: list[float]) -> list[float]:
+    latent_vector = np.array(input_data)
+    generated_data = self.decoder.predict(latent_vector)
+
+    return list(generated_data)
+
+
+@app.route('/parameters')
 def home():
     return "Hello, Flask!"
 
 
 @app.route('/generate')
 def predict():
-    return model.predict([0])
+    return predict([0])
 
 
-if __name__ == '__main__':
-    model.load_model()
-    app.run(host='0.0.0.0', debug=True, port=5000)
+app.run(host='0.0.0.0', debug=True, port=5000)

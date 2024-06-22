@@ -1,11 +1,16 @@
+import os
 from abc import ABC, abstractmethod
 
 from poker import RangePoker
 
 
 class BaseModelMl(ABC):
+    DIR_SAVE = "saved_models"
+    REPORT_DIR = os.path.join(DIR_SAVE, "reports")
     def __init__(self):
         self.data: list[list[float]] = []
+
+        self._creer_repertoires()
 
     def add_data(self, ranges: list[RangePoker]):
         for range_poker in ranges:
@@ -19,10 +24,6 @@ class BaseModelMl(ABC):
     def save_model(self):
         raise NotImplementedError()
 
-    @abstractmethod
-    def load_model(self):
-        raise NotImplementedError()
-
-    @abstractmethod
-    def predict(self, input_data: list[float]):
-        raise NotImplementedError()
+    def _creer_repertoires(self):
+        os.makedirs(self.DIR_SAVE, exist_ok=True)
+        os.makedirs(self.REPORT_DIR, exist_ok=True)
