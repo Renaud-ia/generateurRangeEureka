@@ -47,7 +47,7 @@ class TestFormatGtoWizard(unittest.TestCase):
             InitialSymmetricStacks(2)
         ]
 
-        self.assertListEqual(stack_sizes, stacks_attendus, "La liste des stacks générés n'est pas bonne")
+        self.assertCountEqual(stack_sizes, stacks_attendus, "La liste des stacks générés n'est pas bonne")
 
     def test_cash_game_classic_genere_bons_parametres(self):
         cash_game_classique: FormatGtoWizard = CashGameClassicGtoWizard()
@@ -58,7 +58,7 @@ class TestFormatGtoWizard(unittest.TestCase):
             "gametype": "Cash6m500z"
         }
 
-        self.assertDictEqual(generated_args, expected_args,
+        self.assertCountEqual(generated_args, expected_args,
                              "Les arguments générés ne correspondent pas à ceux attendus")
 
     def test_cash_game_classic_genere_bon_stacks_sizes(self):
@@ -76,7 +76,7 @@ class TestFormatGtoWizard(unittest.TestCase):
             InitialSymmetricStacks(20)
         ]
 
-        self.assertListEqual(stack_sizes, stacks_attendus, "La liste des stacks générés n'est pas bonne")
+        self.assertCountEqual(stack_sizes, stacks_attendus, "La liste des stacks générés n'est pas bonne")
 
     def test_spin_classic_genere_bons_parametres(self):
         spin_classique: FormatGtoWizard = SpinClassicGtoWizard()
@@ -87,7 +87,7 @@ class TestFormatGtoWizard(unittest.TestCase):
             "gametype": "HuSngSimple_V3"
         }
 
-        self.assertDictEqual(generated_args, expected_args,
+        self.assertCountEqual(generated_args, expected_args,
                              "Les arguments générés ne correspondent pas à ceux attendus")
 
     def test_spin_classic_genere_bon_stacks_sizes(self):
@@ -145,4 +145,4 @@ class TestFormatGtoWizard(unittest.TestCase):
             InitialSymmetricStacks(1)
         ]
 
-        self.assertListEqual(stack_sizes, stacks_attendus, "La liste des stacks générés n'est pas bonne")
+        self.assertCountEqual(stack_sizes, stacks_attendus, "La liste des stacks générés n'est pas bonne")

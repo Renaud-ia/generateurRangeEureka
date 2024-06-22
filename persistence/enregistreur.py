@@ -10,10 +10,11 @@ class EntreeExisteDeja(Exception):
 
 
 class Enregistreur(ABC):
-    def __init__(self, format_poker: str, nom_repertoire: str):
+    def __init__(self, format_poker: FormatPoker, nom_repertoire: str):
         os.makedirs(nom_repertoire, exist_ok=True)
+        self.format_poker = format_poker
         self.repertoire: str = nom_repertoire
-        self.adresse_fichier = os.path.join(nom_repertoire, format_poker)
+        self.adresse_fichier = os.path.join(nom_repertoire, format_poker.to_key())
         self.donnees = self._charger_fichier(self.adresse_fichier)
         self._fixer_statut(False)
 

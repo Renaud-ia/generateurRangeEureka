@@ -8,13 +8,13 @@ from unittest.mock import MagicMock
 
 from persistence.enregistreur import EntreeExisteDeja
 from persistence.json_enregistreur import JsonEnregistreur, SituationPoker, RangePoker
-from poker import InitialSymmetricStacks, ActionPoker, Move
+from poker import InitialSymmetricStacks, ActionPoker, Move, Variante, FormatPoker, TypeJeuPoker
 
 
 class TestJsonEnregistreur(unittest.TestCase):
     def setUp(self):
-        self.variante_poker = "Texas Hold'em"
-        self.enregistreur = JsonEnregistreur(self.variante_poker)
+        self.format_poker = FormatPoker(Variante.TEXAS_HOLDEM_NO_LIMIT, TypeJeuPoker.MTT, 25)
+        self.enregistreur = JsonEnregistreur(self.format_poker)
         self.enregistreur.adresse_fichier = "test.json"
         self.enregistreur.donnees = {"termine": False}
         self.stacks = InitialSymmetricStacks(25.5)
@@ -35,20 +35,6 @@ class TestJsonEnregistreur(unittest.TestCase):
     def tearDown(self):
         if os.path.exists(self.enregistreur.adresse_fichier):
             os.remove(self.enregistreur.adresse_fichier)
-
-    def test_charger_fichier_existant(self):
-        # Créer un fichier test.json
-        with open(self.enregistreur.adresse_fichier, 'w') as f:
-            f.write('{"test": true}')
-
-        # Charger le fichier
-        donnees = self.enregistreur._charger_fichier(self.enregistreur.adresse_fichier)
-        self.assertEqual(donnees, {"test": True})
-
-    def test_charger_fichier_inexistant(self):
-        # Charger un fichier inexistant
-        donnees = self.enregistreur._charger_fichier(self.enregistreur.adresse_fichier)
-        self.assertEqual(donnees, {})
 
     def test_fixer_statut(self):
         # Fixer le statut

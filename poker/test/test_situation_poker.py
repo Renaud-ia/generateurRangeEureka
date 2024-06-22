@@ -88,5 +88,17 @@ class TestSituationPoker(unittest.TestCase):
 
         self.assertTrue(self.situation.is_leaf(n_joueurs))
 
+    #todo ajouter plus de cas
+    def test_recree_bon_objet(self):
+        self.situation.ajouter_action(ActionPoker(Move.FOLD))
+        self.situation.ajouter_action(ActionPoker(Move.RAISE))
+        self.situation.ajouter_action(ActionPoker(Move.RAISE_ALL_IN))
+
+        stack, situation, action = self.situation.to_keys()
+
+        recreate_situation = SituationPoker.from_keys(stack, situation, action)
+
+        assert recreate_situation.to_keys() == (stack, situation, action)
+
 
 

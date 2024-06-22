@@ -157,3 +157,11 @@ class SituationPoker:
 
     def __repr__(self):
         return f"SITUATION {self.initial_stacks}, {self.actions}"
+
+    def get_all_in_more_than(self, montant: float):
+        for action in self.actions:
+            if action.move == Move.RAISE_ALL_IN:
+                if action.betsize > montant:
+                    return True
+
+        return False

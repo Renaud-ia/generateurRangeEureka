@@ -2,13 +2,14 @@ import json
 import os.path
 
 from .enregistreur import Enregistreur, EntreeExisteDeja
-from poker import SituationPoker, RangePoker
+from .recuperateur import Recuperateur
+from poker import SituationPoker, RangePoker, FormatPoker
 
 
-class JsonEnregistreur(Enregistreur):
+class JsonEnregistreur(Enregistreur, Recuperateur):
     nom_repertoire: str = "json"
 
-    def __init__(self, format_poker: str):
+    def __init__(self, format_poker: FormatPoker):
         super().__init__(format_poker, self.nom_repertoire)
 
     def _charger_fichier(self, adresse_fichier: str) -> dict:
@@ -68,3 +69,25 @@ class JsonEnregistreur(Enregistreur):
     def sauvegarder(self) -> None:
         with open(self.adresse_fichier, 'w', encoding='utf-8') as fichier:
             json.dump(self.donnees, fichier, indent=4)
+
+    def get_ranges_enregistrees(self) -> dict[SituationPoker, RangePoker]:
+        ranges_enregistrees: dict[SituationPoker, RangePoker] = {}
+
+        for stack in self.donnees:
+            if not isinstance(self.donnees[stack], dict):
+                continue
+            for situation in self.donnees[stack].keys():
+                if not isinstance(self.donnees[stack][situation], dict):
+                    continue
+                for action in self.donnees[stack][situation].keys():
+                    range_dict: dict = self.donnees[stack][situation][action]
+
+                    situation_poker: SituationPoker = SituationPoker.from_keys(stack, situation, action)
+                    range_poker: RangePoker = RangePoker.from_dict(range_dict)
+
+                    ranges_enregistrees[situation_poker] = range_poker
+
+        return ranges_enregistrees
+
+    def get_format_poker(self) -> FormatPoker:
+        return self.format_poker

@@ -32,10 +32,14 @@ class ScraperGtoWizard:
         if self.enregistreur.deja_scrape():
             logger.info(f"Les ranges ont déjà été scrapées pour {self.format_gto_wizard}")
 
-        while len(self.scraping_tasks) > 0:
+        index = 0
+
+        while len(self.scraping_tasks) > 0 and index != 3:
+            index += 1
             scraping_task = self.scraping_tasks.pop()
 
             try:
+                logger.info(f"##SCRAPING en cours de {scraping_task}###")
                 next_tasks: list[ScrapingTaskGtoWizard] = scraping_task.execute(self.bearer, self.enregistreur)
                 self.scraping_tasks.extend(next_tasks)
                 self.enregistreur.sauvegarder()
