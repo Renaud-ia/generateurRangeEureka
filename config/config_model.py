@@ -60,8 +60,8 @@ class ConfigAutoEncodeur:
             param.set_minimum(min_values[index])
             param.set_maximum(max_values[index])
 
-    def save(self, n_data: int, fichier_yaml: str) -> dict:
-        config = {
+    def save(self, n_data: int, fichier_yaml: str) -> None:
+        config: dict = {
             "modele": self.NOM_MODELE,
             "input_dim": self.INPUT_DIM,
             "couches": self.COUCHES,
@@ -85,5 +85,21 @@ class ConfigAutoEncodeur:
 
     @classmethod
     def load_config(cls, nom_fichier: str):
-        # todo
-        return cls()
+        with open(nom_fichier, 'r') as file:
+            config: dict = yaml.safe_load(file)
+
+        latent_params: list[LatentParam] = []
+
+        for params in config["parameters"]:
+            param: LatentParam = LatentParam.from_dict(params)
+            latent_params.append(param)
+
+        return cls(latent_params)
+
+    def get_latent_parameters(self):
+        latent_parameters: list[dict] = []
+
+        for param in self.latent_params:
+            latent_parameters.append(param.to_dict())
+
+        return latent_parameters

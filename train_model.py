@@ -2,7 +2,7 @@ import argparse
 
 from ml import BaseModelMl, AutoEncodeur
 from persistence import GestionnairePersistence, Recuperateur
-from poker import FormatPoker, SituationPoker, RangePoker
+from poker import FormatPoker, SituationPoker, RangePoker, TypeJeuPoker
 
 # Création du parseur d'arguments
 parser = argparse.ArgumentParser(description='Script d\'entrainement pour un modèle de ML avec options de filtrage.')
@@ -17,6 +17,9 @@ args = parser.parse_args()
 # REGLES DE FILTRAGE
 
 def format_passe_filtrage(format_poker: FormatPoker):
+    if format_poker.type_jeu == TypeJeuPoker.MTT:
+        return False
+
     return True
 
 

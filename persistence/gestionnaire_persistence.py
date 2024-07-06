@@ -1,6 +1,6 @@
 import os
 
-from poker import FormatPoker
+from poker import FormatPoker, Variante, TypeJeuPoker
 
 from .enregistreur import Enregistreur
 from .json_enregistreur import JsonEnregistreur
@@ -30,8 +30,18 @@ class GestionnairePersistence:
         return enregistreurs
 
     @classmethod
-    def recuperer_enregistreurs_externe(cls):
-        return [RecuperateurDir("Cash6m50z50bbGeneral"), RecuperateurDir("Cash6m50z100bbGeneral")]
+    def recuperer_enregistreurs_externe(cls) -> list[Recuperateur]:
+        noms_repertoires: list[str] = ["Cash6m50z50bbGeneral", "Cash6m50z100bbGeneral"]
+        # TODO comment trouver le nom du format depuis le nom sans import réciproque ??
+        format_poker: FormatPoker = FormatPoker(Variante.TEXAS_HOLDEM_NO_LIMIT, TypeJeuPoker.CASH_GAME, 6)
+
+        recuperateurs: list[Recuperateur] = []
+
+        for rep in noms_repertoires:
+            recuperateur: RecuperateurDir = RecuperateurDir(rep, format_poker)
+            recuperateurs.append(recuperateur)
+
+        return recuperateurs
 
 
 

@@ -7,6 +7,7 @@ from poker import RangePoker
 class BaseModelMl(ABC):
     DIR_SAVE = "saved_models"
     REPORT_DIR = os.path.join(DIR_SAVE, "reports")
+
     def __init__(self):
         self.data: list[list[float]] = []
 
