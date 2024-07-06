@@ -5,6 +5,7 @@ from poker import FormatPoker
 from .enregistreur import Enregistreur
 from .json_enregistreur import JsonEnregistreur
 from .recuperateur import Recuperateur
+from .recuperateur_dir import RecuperateurDir
 
 
 class GestionnairePersistence:
@@ -30,8 +31,7 @@ class GestionnairePersistence:
 
     @classmethod
     def recuperer_enregistreurs_externe(cls):
-        #todo
-        return []
+        return [RecuperateurDir("Cash6m50z50bbGeneral"), RecuperateurDir("Cash6m50z100bbGeneral")]
 
 
 

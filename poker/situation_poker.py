@@ -10,6 +10,10 @@ class InitialStacks(ABC):
     def to_key(self):
         raise NotImplementedError()
 
+    @abstractmethod
+    def get_common_stack(self):
+        raise NotImplementedError()
+
 
 class InitialSymmetricStacks(InitialStacks):
     def __init__(self, amount_stack: float):

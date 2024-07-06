@@ -1,6 +1,6 @@
 import numpy as np
 from flask import Flask
-from keras.src.saving import load_model
+from tensorflow.keras.model import load_model
 
 from config import ConfigAutoEncodeur
 
@@ -18,7 +18,7 @@ def predict(self, input_data: list[float]) -> list[float]:
 
 
 @app.route('/parameters')
-def home():
+def get_parameters():
     return "Hello, Flask!"
 
 

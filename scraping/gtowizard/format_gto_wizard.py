@@ -5,7 +5,6 @@ from poker import Variante, TypeJeuPoker
 from poker import InitialStacks
 from scraping.gtowizard.converting_url import ConvertInParameters
 
-
 class FormatGtoWizard(FormatPoker, ConvertInParameters):
     def __init__(self,
                  variante: Variante,
@@ -161,3 +160,10 @@ class BuilderFormatGtoWizard:
         list_format.append(mtt_standard_8_joueurs)
 
         return list_format
+
+    @staticmethod
+    def from_str(name: str):
+        if name.startswith("Cash6m50z"):
+            return CashGameClassicGtoWizard()
+
+        raise ValueError(f"Format inconnu: {name}")

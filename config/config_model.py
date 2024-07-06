@@ -31,9 +31,9 @@ class LatentParam:
 class ConfigAutoEncodeur:
     NOM_MODELE = "dense_couche"
     INPUT_DIM = 169
-    COUCHES = [128, 64, 32]
+    COUCHES = [100, 50, 25]
     LATENT_SPACE_DIM = 4
-    EPOCHS = 100
+    EPOCHS = 200
     OPTIMIZER = Adam
     LEARNING_RATE = 0.001
     BATCH_SIZE = 32

@@ -1,7 +1,7 @@
 import logging
 import time
 
-from persistence import GestionnairePersistence
+from persistence.gestionnaire_persistence import GestionnairePersistence
 from .gtowizard import FormatGtoWizard, SituationPokerGtoWizard, ScrapingTaskGtoWizard, TokenManagerGtoWizard
 from .gtowizard.situation_gto_wizard import BuilderSituationGtoWizard
 from .scraping_exceptions import BearerNotValid, LimitConnexionReached
@@ -32,10 +32,7 @@ class ScraperGtoWizard:
         if self.enregistreur.deja_scrape():
             logger.info(f"Les ranges ont déjà été scrapées pour {self.format_gto_wizard}")
 
-        index = 0
-
-        while len(self.scraping_tasks) > 0 and index != 3:
-            index += 1
+        while len(self.scraping_tasks) > 0:
             scraping_task = self.scraping_tasks.pop()
 
             try:
