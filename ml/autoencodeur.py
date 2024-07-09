@@ -109,6 +109,7 @@ class AutoEncodeur(BaseModelMl):
         fichier_yaml = f"{self.DIR_SAVE}/{self.config.NOM_MODELE}_{self.timestamp}.yaml"
 
         self.config.save(len(self.data), fichier_yaml)
+        self.config.save(len(self.data), 'model-config.yaml')
 
     def _sauvegarder_graphique(self, history):
         plt.title(f"{self.config.NOM_MODELE}, "
@@ -123,3 +124,4 @@ class AutoEncodeur(BaseModelMl):
 
     def save_model(self):
         self.decoder.save(f'{self.DIR_SAVE}/{self.config.NOM_MODELE}_{self.timestamp}.keras')
+        self.decoder.save('model.keras')

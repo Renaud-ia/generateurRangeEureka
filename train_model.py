@@ -17,9 +17,6 @@ args = parser.parse_args()
 # REGLES DE FILTRAGE
 
 def format_passe_filtrage(format_poker: FormatPoker):
-    if format_poker.type_jeu == TypeJeuPoker.MTT:
-        return False
-
     return True
 
 

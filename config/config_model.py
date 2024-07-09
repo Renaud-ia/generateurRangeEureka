@@ -32,8 +32,8 @@ class ConfigAutoEncodeur:
     NOM_MODELE = "dense_couche"
     INPUT_DIM = 169
     COUCHES = [100, 50, 25]
-    LATENT_SPACE_DIM = 4
-    EPOCHS = 200
+    LATENT_SPACE_DIM = 3
+    EPOCHS = 100
     OPTIMIZER = Adam
     LEARNING_RATE = 0.001
     BATCH_SIZE = 32
@@ -67,7 +67,7 @@ class ConfigAutoEncodeur:
             "couches": self.COUCHES,
             "latent_dim": self.LATENT_SPACE_DIM,
             "epochs": self.EPOCHS,
-            "optimizer": self.OPTIMIZER,
+            "optimizer": str(self.OPTIMIZER),
             "learning_rate": self.LEARNING_RATE,
             "batch": self.BATCH_SIZE,
             "split": self.VALIDATION_SPLIT,

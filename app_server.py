@@ -1,11 +1,12 @@
 import numpy as np
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 import tensorflow as tf
-
 from config import ConfigAutoEncodeur
 from poker import RangePoker
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 model = tf.keras.models.load_model('model.keras')
 config: ConfigAutoEncodeur = ConfigAutoEncodeur.load_config('model-config.yaml')
@@ -30,17 +31,13 @@ def get_parameters():
 
 @app.route('/generate', methods=['POST'])
 def generate_range():
+    print(request.get_json())
     # Récupération des données JSON de la requête
     data = request.get_json()
 
     # Vérification que les données sont une liste
     if not isinstance(data, list):
         return jsonify({'error': 'Input should be a list of floats'}), 400
-
-    # Vérification que tous les éléments de la liste sont des flottants
-    for item in data:
-        if not isinstance(item, float):
-            return jsonify({'error': 'All elements in the list should be floats'}), 400
 
     return jsonify(predict([data]))
 
