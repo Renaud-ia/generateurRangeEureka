@@ -1,0 +1,121 @@
+D'accord, voici une version mise à jour du README qui inclut des instructions pour construire et exécuter le projet à l'aide de Docker :
+Backend de Générateur de Ranges de Poker
+
+Ce projet contient un générateur de ranges de poker basé sur un autoencodeur, entraîné sur des ranges GTO (Game Theory Optimal) scrappées. Le projet comprend un scraper de ranges et un serveur qui communique avec un frontend pour fournir des paramètres de l'espace latent et retourner des ranges.
+Table des matières
+
+    Installation
+    Utilisation
+    API
+    Structure du projet
+    Déploiement
+    Contributions
+    Licence
+
+Installation
+Avec Docker
+
+    Construisez l'image Docker :
+
+    sh
+
+docker build -t range-generator-backend .
+
+Lancez le conteneur Docker :
+
+sh
+
+    docker run -p 5000:5000 range-generator-backend
+
+Sans Docker
+
+    Clonez le dépôt :
+
+    sh
+
+git clone https://github.com/votre-utilisateur/votre-repo.git
+cd votre-repo
+
+Créez un environnement virtuel et activez-le :
+
+sh
+
+python -m venv venv
+source venv/bin/activate  # Sous Windows: venv\Scripts\activate
+
+Installez les dépendances :
+
+sh
+
+pip install -r requirements.txt
+pip install -r requirements_server.txt
+
+Lancez le serveur Flask :
+
+sh
+
+    python app_server.py
+
+Utilisation
+
+    Le serveur sera disponible sur http://localhost:5000.
+
+    Pour tester un modèle sur le frontend, copiez les fichiers model.keras et model-config.yaml à la racine du projet.
+
+API
+Route /parameters
+
+    Méthode: GET
+    Description: Récupère les paramètres de l'espace latent pour le modèle de génération de ranges.
+    Réponse: JSON avec une liste de paramètres, par exemple:
+
+    json
+
+    [
+      {"nom": "parametre1", "min": 0, "max": 0.525},
+      {"nom": "parametre2", "min": 0, "max": 1.25}
+    ]
+
+Route /generate
+
+    Méthode: POST
+    Description: Génère une range de poker basée sur les valeurs des paramètres fournis.
+    Corps de la requête: JSON avec les valeurs des paramètres, par exemple:
+
+    json
+
+[0.14, 1.2]
+
+Réponse: JSON avec les ranges de poker, par exemple:
+
+json
+
+    {
+      "AA": 0.5,
+      "KQo": 0.4
+    }
+
+Structure du projet
+
+    app_server.py: Script principal pour lancer le serveur Flask.
+    scraper/: Contient les scripts pour scraper les ranges GTO.
+    models/: Contient les modèles d'autoencodeur et les utilitaires associés.
+    saved_models/: Répertoire où sont sauvegardés les modèles entraînés.
+        saved_models/reports/: Contient les rapports d'entraînement des modèles.
+
+Déploiement
+
+Pour déployer ce projet, suivez les étapes d'installation sur le serveur de votre choix et configurez un serveur web pour servir le backend Flask.
+Déploiement avec Docker
+
+    Construisez l'image Docker :
+
+    sh
+
+docker build -t range-generator-backend .
+
+Lancez le conteneur Docker :
+
+sh
+
+docker run -p 5000:5000 range-generator-backend

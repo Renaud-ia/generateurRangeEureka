@@ -1,0 +1,24 @@
+batch: 32
+couches:
+- 100
+- 50
+- 25
+epochs: 100
+input_dim: 169
+latent_dim: 3
+learning_rate: 0.001
+loss: mse
+modele: dense_couche
+n_data: 3523
+optimizer: <class 'keras.src.optimizers.adam.Adam'>
+parameters:
+- max: 78.6427230834961
+  min: 0.0
+  nom: Inconnu
+- max: 82.54630279541016
+  min: 0.0
+  nom: Inconnu
+- max: 0.0
+  min: 0.0
+  nom: Inconnu
+split: 0.2
