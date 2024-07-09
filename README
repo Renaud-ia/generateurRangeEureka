@@ -1,4 +1,3 @@
-D'accord, voici une version mise à jour du README qui inclut des instructions pour construire et exécuter le projet à l'aide de Docker :
 Backend de Générateur de Ranges de Poker
 
 Ce projet contient un générateur de ranges de poker basé sur un autoencodeur, entraîné sur des ranges GTO (Game Theory Optimal) scrappées. Le projet comprend un scraper de ranges et un serveur qui communique avec un frontend pour fournir des paramètres de l'espace latent et retourner des ranges.
@@ -17,9 +16,10 @@ Avec Docker
 
     Construisez l'image Docker :
 
-    sh
+''' sh
 
 docker build -t range-generator-backend .
+'''
 
 Lancez le conteneur Docker :
 
